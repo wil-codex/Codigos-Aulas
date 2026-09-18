@@ -1,0 +1,120 @@
+CREATE database webmedicacademy;
+USE webmedicacademy;
+
+CREATE Table plano_saude (
+	plano_saude_id INT auto_increment,
+    plano_saude_nome VARCHAR(255) NOT NULL,
+    
+    PRIMARY KEY(plano_saude_id),
+    UNIQUE KEY uk_plano_saude_nome (plano_saude_nome)
+    
+);
+
+CREATE Table paciente (
+	paciente_id INT auto_increment,
+    paciente_nome VARCHAR (255) NOT NULL,
+    paciente_status BOOLEAN NOT NULL DEFAULT TRUE,
+    paciente_plano_saude_fk INT NULL, 
+    
+    PRIMARY KEY (paciente_id),
+    CONSTRAINT paciente_plano_saude_fk
+    FOREIGN KEY (paciente_plano_saude_fk)
+    REFERENCES plano_saude (plano_saude_id)
+    
+);
+
+CREATE TABLE especialidade (
+	especialidade_id INT auto_increment,
+    especialidade_nome VARCHAR(255) NOT NULL,
+    
+    PRIMARY KEY (especialidade_id),
+    UNIQUE KEY uk_especialidade_nome (especialidade_nome)
+);
+
+CREATE TABLE medico (
+		medico_id INT auto_increment,
+        medico_nome VARCHAR(255) NOT NULL,
+        medico_crm VARCHAR(255) NOT NULL,
+        medico_especialidade_fk INT NOT NULL,
+        
+        PRIMARY KEY (medico_id),
+        UNIQUE KEY uk_medico_crm (medico_crm),
+        CONSTRAINT medico_especialidade_fk
+        FOREIGN KEY (medico_especialidade_fk)
+        REFERENCES especialidade (especialidade_id)
+);
+
+CREATE TABLE consulta (
+	consulta_id INT auto_increment,
+    consulta_data DATE NOT NULL,
+    consulta_hora TIME NOT NULL,
+    consulta_paciente_id_fk INT NOT NULL,
+    consulta_medico_id_fk INT NOT NULL,
+    
+    PRIMARY KEY (consulta_id), 
+    CONSTRAINT consulta_paciente_fk
+    FOREIGN KEY (consulta_paciente_id_fk)
+    REFERENCES paciente (paciente_id),
+    
+    CONSTRAINT consulta_medico_id_fk
+    FOREIGN KEY (consulta_medico_id_fk)
+    REFERENCES medico(medico_id)
+
+);
+
+CREATE TABLE tipo_exame (
+	tipo_exame_id INT AUTO_INCREMENT,
+    tipo_exame_nome VARCHAR(255) NOT NULL,
+    tipo_exame_especialidade_fk INT NOT NULL,
+    
+    PRIMARY KEY (tipo_exame_id),
+    CONSTRAINT tipo_exame_especialidade_fk
+    FOREIGN KEY (tipo_exame_especialidade_fk)
+    REFERENCES especialidade (especialidade_id)
+
+);
+
+CREATE TABLE exame (
+	exame_id INT AUTO_INCREMENT,
+    exame_consulta_id_fk INT NOT NULL,
+    exame_tipo_id_fk INT NOT NULL,
+    exame_resultado_arquivo VARCHAR(255) NULL,
+    
+    PRIMARY KEY (exame_id),
+    
+    CONSTRAINT exame_consulta_id_fk 
+    FOREIGN KEY (exame_consulta_id_fk)
+    REFERENCES consulta (consulta_id),
+    
+    CONSTRAINT exame_tipo_id_fk
+    FOREIGN KEY (exame_tipo_id_fk)
+    REFERENCES tipo_exame (tipo_exame_id)
+    
+    );
+    
+CREATE TABLE medicamento (
+	medicamento_id INT AUTO_INCREMENT,
+    medicamento_nome VARCHAR(255) NOT NULL,
+    
+    PRIMARY KEY (medicamento_id),
+    UNIQUE KEY uk_medicamento_nome (medicamento_nome)
+
+);
+
+CREATE TABLE receita (
+	receita_id INT AUTO_INCREMENT,
+    receita_consulta_id_fk INT NOT NULL,
+    receita_medicamento_fk INT NOT NULL,
+    dosagem VARCHAR(255) NOT NULL,
+    
+    PRIMARY KEY (receita_id),
+    CONSTRAINT receita_consulta_id_fk
+    FOREIGN KEY (receita_consulta_id_fk)
+    REFERENCES consulta (consulta_id),
+    
+    CONSTRAINT receita_medicamento_fk
+    FOREIGN KEY (receita_medicamento_fk)
+    REFERENCES medicamento (medicamento_id)
+    
+
+);
