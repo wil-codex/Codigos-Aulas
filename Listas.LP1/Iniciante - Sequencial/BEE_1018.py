@@ -21,4 +21,13 @@ resto = resto % 2
 
 nota1 = resto//1
 
+print(valor)
+print(f"{nota100} nota(s) de R$ 100,00")
+print(f"{nota50} nota(s) de R$ 50,00")
+print(f"{nota20} nota(s) de R$ 20,00")
+print(f"{nota10} nota(s) de R$ 10,00")
+print(f"{nota5} nota(s) de R$ 5,00")
+print(f"{nota2} nota(s) de R$ 2,00")
+print(f"{nota1} nota(s) de R$ 1,00")
+
 
