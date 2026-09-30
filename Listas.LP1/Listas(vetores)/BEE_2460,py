@@ -1,0 +1,15 @@
+while True:
+    try:
+        n = int(input())
+        
+        fila = list(map(int, input().split()))
+        remov = int(input())
+        filanova = list(map(int, input().split()))
+        
+        for i in range(remov):
+            if filanova[i] in fila:
+                indice = fila.index(filanova[i])
+                fila.pop(indice)
+        print(*fila)
+    except EOFError:
+        break   
