@@ -31,3 +31,5 @@ print(f"{nota2} nota(s) de R$ 2,00")
 print(f"{nota1} nota(s) de R$ 1,00")
 
 
+
+
